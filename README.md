@@ -204,9 +204,11 @@ changes.
 
 The goal is to merge this into django-anymail itself. Under Anymail's
 [policy for new ESPs](https://github.com/anymail/django-anymail/discussions/501), that
-requires a "new ESP request" issue that collects enough community interest. If you want
-Lettermint in Anymail, 👍 that issue. The backend and webhook modules here mirror Anymail's
-own layout so they can move upstream largely unchanged.
+requires a "new ESP request" issue that collects enough community interest. That request is
+[anymail/django-anymail#508](https://github.com/anymail/django-anymail/issues/508). If you
+use Lettermint with Django and want it in Anymail, add a 👍 reaction to the issue itself (only
+👍 on the top post counts; "+1" comments don't). The backend and webhook modules here mirror
+Anymail's own layout so they can move upstream largely unchanged.
 
 ## Development
 
