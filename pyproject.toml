@@ -38,7 +38,7 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://github.com/palgakalkulaator/django-anymail-lettermint"
-Palgakalkulaator = "https://palgakalkulaator.ee"
+Palgakalkulaator = "https://www.palgakalkulaator.ee"
 Repository = "https://github.com/palgakalkulaator/django-anymail-lettermint"
 Issues = "https://github.com/palgakalkulaator/django-anymail-lettermint/issues"
 Changelog = "https://github.com/palgakalkulaator/django-anymail-lettermint/blob/main/CHANGELOG.md"
