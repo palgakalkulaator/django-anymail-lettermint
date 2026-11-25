@@ -58,7 +58,10 @@ ANYMAIL = {
 from anymail.message import AnymailMessage
 
 msg = AnymailMessage(
-    "Welcome", "Hi!", "Team <team@example.com>", ["user@example.com"],
+    "Welcome",
+    "Hi!",
+    "Team <team@example.com>",
+    ["user@example.com"],
     tags=["welcome"],
     metadata={"user_id": 42},
     esp_extra={
@@ -69,7 +72,7 @@ msg = AnymailMessage(
 )
 msg.send()
 msg.anymail_status.message_id  # Lettermint message_id
-msg.anymail_status.status      # {"queued"}: Lettermint answered "pending" or "scheduled"
+msg.anymail_status.status  # {"queued"}: Lettermint answered "pending" or "scheduled"
 ```
 
 `merge_data={}` sends one message per `to` recipient through `POST /send/batch`, with
@@ -96,6 +99,23 @@ msg.anymail_status.status      # {"queued"}: Lettermint answered "pending" or "s
 | Idempotency | via `esp_extra` | `idempotency_key` becomes the `Idempotency-Key` header. For a batch it covers the whole request |
 | Tracking webhook | ✅ | Signed (HMAC-SHA256) |
 | Inbound webhook | ✅ | Signed (HMAC-SHA256) |
+
+Lettermint's API has no stored templates (so no `template_id` or merge variables), and it
+sets the envelope sender (Return-Path) per domain in DNS, not per message. For personalized
+email, render each body in Django and send one message per recipient:
+
+```python
+from django.template.loader import render_to_string
+
+for user in users:
+    context = {"user": user}
+    AnymailMessage(
+        render_to_string("welcome/subject.txt", context).strip(),
+        render_to_string("welcome/body.txt", context),
+        to=[user.email],
+        metadata={"user_id": user.pk},
+    ).send()
+```
 
 Unsupported features raise `AnymailUnsupportedFeature` unless you set
 `ANYMAIL["IGNORE_UNSUPPORTED_FEATURES"] = True`.
@@ -127,10 +147,12 @@ Then handle Anymail's standard signals:
 from anymail.signals import inbound, tracking
 from django.dispatch import receiver
 
+
 @receiver(tracking)
 def handle_tracking(sender, event, esp_name, **kwargs):
     if event.event_type == "bounced":
         ...  # event.recipient, event.message_id, event.mta_response, event.metadata
+
 
 @receiver(inbound)
 def handle_inbound(sender, event, esp_name, **kwargs):

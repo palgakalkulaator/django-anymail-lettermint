@@ -37,10 +37,10 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/madisvain/django-anymail-lettermint"
-Repository = "https://github.com/madisvain/django-anymail-lettermint"
-Issues = "https://github.com/madisvain/django-anymail-lettermint/issues"
-Changelog = "https://github.com/madisvain/django-anymail-lettermint/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/palgakalkulaator/django-anymail-lettermint"
+Repository = "https://github.com/palgakalkulaator/django-anymail-lettermint"
+Issues = "https://github.com/palgakalkulaator/django-anymail-lettermint/issues"
+Changelog = "https://github.com/palgakalkulaator/django-anymail-lettermint/blob/main/CHANGELOG.md"
 
 [dependency-groups]
 dev = [

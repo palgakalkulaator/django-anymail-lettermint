@@ -252,7 +252,8 @@ class LettermintPayload(RequestsPayload):
         self.data.setdefault("settings", {})["track_opens"] = track_opens
 
     # Lettermint has no server-side templates, so template_id and
-    # merge_global_data stay unsupported (base class raises for them).
+    # merge_global_data stay unsupported (base class raises for them). If it adds
+    # templates, implement set_template_id / set_merge_global_data and extend set_merge_data.
 
     def set_merge_data(self, merge_data):
         # Empty merge_data ({}) is Anymail's way of asking for a batch send
