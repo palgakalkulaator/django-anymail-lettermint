@@ -172,6 +172,37 @@ def test_clicked(client, tracking_handler):
     assert event.user_agent == "Mozilla/5.0"
 
 
+def test_auto_replied_recipient_from_auto_reply(client, tracking_handler):
+    # Captured from a Lettermint Sandbox project (context ids removed).
+    payload = {
+        "id": "97c78b73-05cf-5dbd-9afb-0c0c773ee23c",
+        "event": "message.auto_replied",
+        "timestamp": "2026-11-25T18:10:21.813151Z",
+        "sandbox": True,
+        "sandbox_result": "auto_replied",
+        "data": {
+            "message_id": "17f03e13-0a78-4757-ae46-a373a7c62626",
+            "subject": "webhook check: auto_replied",
+            "metadata": {"n": "1", "sandbox_result": "auto_replied"},
+            "tag": "webhook-check",
+            "auto_reply": {
+                "sender": "delivered@example.com",
+                "recipient": "delivered@example.com",
+                "subject": "webhook check: auto_replied",
+                "body": {"text": "This is a simulated automatic reply."},
+            },
+            "tags": [{"name": "__lettermint_tag", "value": "webhook-check"}],
+            "headers": [],
+        },
+    }
+    post(client, TRACKING_URL, payload)
+    event = received_event(tracking_handler)
+    assert event.event_type == "autoresponded"
+    assert event.recipient == "delivered@example.com"
+    assert event.tags == ["webhook-check"]
+    assert event.timestamp == datetime(2026, 11, 25, 18, 10, 21, 813151, tzinfo=timezone.utc)
+
+
 def test_created_has_no_recipient(client, tracking_handler):
     payload = message_event("message.created", to=["a@example.com", "b@example.com"])
     del payload["data"]["recipient"]

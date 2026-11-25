@@ -183,7 +183,8 @@ Every event carries `event_id` (Lettermint's delivery `id`, which stays the same
 so use it to de-duplicate), `timestamp`, `message_id`, `recipient`, `metadata`, `tags`
 (the single `tag`), `description` (`reason`), `mta_response` (`response.content`),
 `click_url` (`destination_url`), `user_agent`, and the raw payload as `esp_event`.
-`message.created` covers every recipient, so its `recipient` is `None`.
+`message.created` covers every recipient, so its `recipient` is `None`. For
+`message.auto_replied`, `recipient` is the auto-reply's sender (`data.auto_reply.sender`).
 
 Inbound attachments that Lettermint sends as a download URL instead of inline content are
 fetched while the webhook request is being handled.

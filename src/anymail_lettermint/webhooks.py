@@ -185,6 +185,12 @@ class LettermintTrackingWebhookView(LettermintSignatureMixin, AnymailBaseWebhook
             response = {}
         tag = data.get("tag")
         metadata = data.get("metadata")
+        recipient = data.get("recipient")
+        auto_reply = data.get("auto_reply")
+        if recipient is None and isinstance(auto_reply, dict):
+            # message.auto_replied has no data.recipient: the original recipient
+            # is the auto-reply's sender.
+            recipient = auto_reply.get("sender")
         return AnymailTrackingEvent(
             event_type=event_type,
             timestamp=_parse_timestamp(esp_event.get("timestamp")),
@@ -192,7 +198,7 @@ class LettermintTrackingWebhookView(LettermintSignatureMixin, AnymailBaseWebhook
             event_id=esp_event.get("id"),
             message_id=data.get("message_id"),
             # message.created covers every recipient, so it has no "recipient".
-            recipient=data.get("recipient"),
+            recipient=recipient,
             reject_reason=reject_reason,
             description=data.get("reason"),
             mta_response=response.get("content"),
