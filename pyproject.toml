@@ -10,7 +10,7 @@ readme = "README.md"
 license = "BSD-3-Clause"
 license-files = ["LICENSE"]
 requires-python = ">=3.10"
-authors = [{ name = "Madis Väin" }]
+authors = [{ name = "Palgakalkulaator" }]
 keywords = ["django", "anymail", "lettermint", "email", "esp", "webhooks", "transactional email"]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -38,6 +38,7 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://github.com/palgakalkulaator/django-anymail-lettermint"
+Palgakalkulaator = "https://palgakalkulaator.ee"
 Repository = "https://github.com/palgakalkulaator/django-anymail-lettermint"
 Issues = "https://github.com/palgakalkulaator/django-anymail-lettermint/issues"
 Changelog = "https://github.com/palgakalkulaator/django-anymail-lettermint/blob/main/CHANGELOG.md"

@@ -11,8 +11,11 @@ Lettermint signs every delivery (https://lettermint.co/docs/platform/webhooks/si
     X-Lettermint-Delivery:  <unix seconds>   (must equal t)
 
 The HMAC is over ``"<t>." + raw body`` keyed with the webhook's signing secret
-(``whsec_...``, used as is). The checks are ported from the official SDK's
-``lettermint/webhook.py``.
+(``whsec_...``, used as is).
+
+verify_signature() is adapted from ``lettermint/webhook.py`` in the official
+Lettermint Python SDK (https://github.com/lettermint/lettermint-python),
+Copyright (c) 2025 Lettermint, MIT License.
 """
 
 import hashlib
