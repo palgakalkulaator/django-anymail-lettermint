@@ -54,6 +54,7 @@ dev = [
     "types-requests",
     "tox>=4.30",
     "tox-uv>=1.28",
+    "bump-my-version>=1.8.1",
 ]
 
 [tool.hatch.version]
@@ -107,3 +108,31 @@ ignore_missing_imports = true
 
 [tool.django-stubs]
 django_settings_module = "tests.settings"
+
+[tool.bumpversion]
+# uv run bump-my-version bump patch|minor|major: updates __version__ and CHANGELOG.md,
+# commits "chore: release X.Y.Z" and creates the annotated tag vX.Y.Z.
+current_version = "0.1.0"
+commit = true
+message = "chore: release {new_version}"
+tag = true
+tag_name = "v{new_version}"
+tag_message = "Release {new_version}"
+
+[[tool.bumpversion.files]]
+filename = "src/anymail_lettermint/__init__.py"
+search = '__version__ = "{current_version}"'
+replace = '__version__ = "{new_version}"'
+
+[[tool.bumpversion.files]]
+filename = "CHANGELOG.md"
+search = "## [Unreleased]"
+replace = """## [Unreleased]
+
+## [{new_version}] - {now:%Y-%m-%d}"""
+
+[[tool.bumpversion.files]]
+filename = "CHANGELOG.md"
+search = "[Unreleased]: https://github.com/palgakalkulaator/django-anymail-lettermint/compare/v{current_version}...HEAD"
+replace = """[Unreleased]: https://github.com/palgakalkulaator/django-anymail-lettermint/compare/v{new_version}...HEAD
+[{new_version}]: https://github.com/palgakalkulaator/django-anymail-lettermint/compare/v{current_version}...v{new_version}"""
