@@ -6,6 +6,12 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- Release tooling: `uv run bump-my-version bump patch|minor|major` updates `__version__` and
+  this changelog, commits `chore: release X.Y.Z` and tags `vX.Y.Z`. See README → Releasing.
+  (#1)
+
 ## [0.1.0] - 2026-11-25
 
 ### Added
