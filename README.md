@@ -220,8 +220,23 @@ uv run tox -p auto           # Python 3.10–3.14 × Django 5.2/6.0/6.1, plus lo
 Live test against a Lettermint Sandbox project (skipped without a token):
 
 ```bash
-LETTERMINT_TEST_TOKEN=... LETTERMINT_TEST_FROM=you@verified-domain uv run pytest -m live
+uv run --env-file .env pytest -m live   # LETTERMINT_TEST_TOKEN, LETTERMINT_TEST_FROM in .env
 ```
+
+### Releasing
+
+Add changes under `## [Unreleased]` in `CHANGELOG.md` as they land. To release, on an
+up-to-date `main` with a clean tree:
+
+```bash
+uv run bump-my-version bump patch   # or minor / major; --dry-run -v to preview
+git push --follow-tags
+```
+
+`bump-my-version` updates `__version__` and `CHANGELOG.md`, commits `chore: release X.Y.Z`
+and tags `vX.Y.Z`. The tag starts the Release workflow. It runs the tests, builds, and waits
+for approval of the `pypi` environment (Actions → the run → Review deployments), then
+publishes with Trusted Publishing.
 
 ## License
 
