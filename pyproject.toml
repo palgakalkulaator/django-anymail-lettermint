@@ -36,6 +36,10 @@ dependencies = [
     "django-anymail>=15.0,<16",
 ]
 
+[project.optional-dependencies]
+# Verify webhook signatures with the official Lettermint SDK instead of the built-in check.
+sdk = ["lettermint>=3.3,<4"]
+
 [project.urls]
 Homepage = "https://github.com/palgakalkulaator/django-anymail-lettermint"
 Palgakalkulaator = "https://www.palgakalkulaator.ee"
@@ -55,6 +59,7 @@ dev = [
     "tox>=4.30",
     "tox-uv>=1.28",
     "bump-my-version>=1.8.1",
+    "lettermint>=3.3,<4",
 ]
 
 [tool.hatch.version]

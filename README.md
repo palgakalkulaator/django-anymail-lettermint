@@ -12,6 +12,8 @@ a settings change.
 
 ```bash
 pip install django-anymail-lettermint
+# or, to verify webhook signatures with the official Lettermint SDK:
+pip install "django-anymail-lettermint[sdk]"
 ```
 
 Requires Python 3.10+, Django 5.2 / 6.0 / 6.1 and django-anymail 15.x.
@@ -141,6 +143,13 @@ constant time). It also requires `X-Lettermint-Delivery` to equal the signed tim
 timestamp to be within 5 minutes. Anything else gets HTTP 400 and no signal fires. If you
 also set Anymail's shared `WEBHOOK_SECRET`, basic auth is enforced as well.
 
+With the `[sdk]` extra installed, the official
+[Lettermint SDK](https://github.com/lettermint/lettermint-python)'s `lettermint.Webhook`
+does this check, so signature handling follows Lettermint's own releases. Without it, a
+built-in port of the same check is used. Both behave the same, and the tests run against
+both. Sending never uses the SDK: it goes through Anymail's own HTTP layer, like Anymail's
+built-in ESPs.
+
 Then handle Anymail's standard signals:
 
 ```python
@@ -193,7 +202,7 @@ fetched while the webhook request is being handled.
 
 | Package | Built on | Notes |
 |---|---|---|
-| **django-anymail-lettermint** (this) | django-anymail | Anymail's message API, `anymail_status`, `tracking`/`inbound` signals; no Lettermint SDK needed |
+| **django-anymail-lettermint** (this) | django-anymail | Anymail's message API, `anymail_status`, `tracking`/`inbound` signals; Lettermint SDK optional (`[sdk]`, webhook verification) |
 | [django-lettermint](https://pypi.org/project/django-lettermint/) | Lettermint Python SDK | Plain Django email backend; Django 6.1+ |
 | [lettermint-django](https://pypi.org/project/lettermint-django/) | Lettermint Python SDK | Plain Django email backend |
 

@@ -11,6 +11,10 @@ All notable changes to this project are documented here. The format follows
 - Release tooling: `uv run bump-my-version bump patch|minor|major` updates `__version__` and
   this changelog, commits `chore: release X.Y.Z` and tags `vX.Y.Z`. See README → Releasing.
   (#1)
+- `[sdk]` extra: with `pip install "django-anymail-lettermint[sdk]"`, the tracking and inbound
+  webhooks verify signatures with the official Lettermint SDK (`lettermint.Webhook`).
+  Without it, the built-in check is used as before. Sending is unchanged.
+  (#3)
 
 ## [0.1.0] - 2026-11-25
 

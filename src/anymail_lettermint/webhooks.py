@@ -13,8 +13,10 @@ Lettermint signs every delivery (https://lettermint.co/docs/platform/webhooks/si
 The HMAC is over ``"<t>." + raw body`` keyed with the webhook's signing secret
 (``whsec_...``, used as is).
 
-verify_signature() is adapted from ``lettermint/webhook.py`` in the official
-Lettermint Python SDK (https://github.com/lettermint/lettermint-python),
+With the ``[sdk]`` extra installed, the SDK's ``lettermint.Webhook`` verifies
+each request. Without it, verify_signature() does, which is adapted from
+``lettermint/webhook.py`` in the official Lettermint Python SDK
+(https://github.com/lettermint/lettermint-python),
 Copyright (c) 2025 Lettermint, MIT License.
 """
 
@@ -39,6 +41,12 @@ from anymail.signals import (
 )
 from anymail.utils import get_anymail_setting
 from anymail.webhooks.base import AnymailBaseWebhookView, AnymailCoreWebhookView
+
+try:  # pip install django-anymail-lettermint[sdk]
+    from lettermint import Webhook as SdkWebhook
+    from lettermint import WebhookVerificationError as SdkWebhookVerificationError
+except ImportError:
+    SdkWebhook = None  # type: ignore[assignment,misc]
 
 __all__ = [
     "LettermintInboundWebhookView",
@@ -115,6 +123,13 @@ class LettermintSignatureMixin(AnymailCoreWebhookView):
         super().__init__(**kwargs)
 
     def validate_request(self, request):
+        if SdkWebhook is not None:
+            # The [sdk] extra is installed: let Lettermint's own SDK verify.
+            try:
+                SdkWebhook(self.signing_secret).verify(request.body, request.headers)
+            except SdkWebhookVerificationError as err:
+                raise AnymailWebhookValidationFailure(str(err)) from err
+            return
         verify_signature(
             request.body,
             request.headers.get("X-Lettermint-Signature"),
