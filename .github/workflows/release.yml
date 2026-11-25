@@ -1,6 +1,7 @@
 name: Release
 
-# Push a tag vX.Y.Z (matching __version__) to publish to TestPyPI, then PyPI.
+# Push a tag vX.Y.Z (matching __version__) to publish to PyPI. The pypi environment
+# requires approval in GitHub before the upload runs.
 # Publishing uses PyPI Trusted Publishing (OIDC): no API tokens are stored.
 on:
   push:
@@ -27,25 +28,8 @@ jobs:
           name: dist
           path: dist/
 
-  testpypi:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: testpypi
-      url: https://test.pypi.org/p/django-anymail-lettermint
-    permissions:
-      id-token: write
-    steps:
-      - uses: actions/download-artifact@v8
-        with:
-          name: dist
-          path: dist/
-      - uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          repository-url: https://test.pypi.org/legacy/
-
   pypi:
-    needs: testpypi
+    needs: build
     runs-on: ubuntu-latest
     environment:
       name: pypi
