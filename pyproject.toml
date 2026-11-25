@@ -1,0 +1,108 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "django-anymail-lettermint"
+dynamic = ["version"]
+description = "Lettermint (lettermint.co) email backend and webhooks for django-anymail"
+readme = "README.md"
+license = "BSD-3-Clause"
+license-files = ["LICENSE"]
+requires-python = ">=3.10"
+authors = [{ name = "Madis Väin" }]
+keywords = ["django", "anymail", "lettermint", "email", "esp", "webhooks", "transactional email"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "Framework :: Django :: 5.2",
+    "Framework :: Django :: 6.0",
+    "Framework :: Django :: 6.1",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Communications :: Email",
+    "Typing :: Typed",
+]
+dependencies = [
+    "django>=5.2",
+    "django-anymail>=15.0,<16",
+]
+
+[project.urls]
+Homepage = "https://github.com/madisvain/django-anymail-lettermint"
+Repository = "https://github.com/madisvain/django-anymail-lettermint"
+Issues = "https://github.com/madisvain/django-anymail-lettermint/issues"
+Changelog = "https://github.com/madisvain/django-anymail-lettermint/blob/main/CHANGELOG.md"
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "pytest-django>=4.9",
+    "pytest-cov>=6",
+    "ruff>=0.14",
+    "mypy>=1.18",
+    "django-stubs>=5.2",
+    "types-requests",
+    "tox>=4.30",
+    "tox-uv>=1.28",
+]
+
+[tool.hatch.version]
+path = "src/anymail_lettermint/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/anymail_lettermint"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src", "tests", "README.md", "CHANGELOG.md", "LICENSE", "tox.ini"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "tests.settings"
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "--strict-markers"
+filterwarnings = [
+    "error",
+    # Django 6.1 deprecations of the pre-MAILERS API these tests still cover
+    "ignore:The EMAIL_BACKEND setting is deprecated",
+    "ignore:MIMEBase attachments are deprecated",
+    "ignore:The 'fail_silently' argument is deprecated",
+    "ignore:Anymail will drop support for fail_silently",
+]
+markers = ["live: sends real email through the Lettermint API (needs LETTERMINT_TEST_TOKEN)"]
+
+[tool.coverage.run]
+source = ["anymail_lettermint"]
+branch = true
+
+[tool.coverage.report]
+fail_under = 95
+show_missing = true
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "B", "C4", "UP", "SIM", "DJ"]
+
+[tool.mypy]
+python_version = "3.10"
+files = ["src"]
+check_untyped_defs = true
+plugins = ["mypy_django_plugin.main"]
+
+[[tool.mypy.overrides]]
+module = ["anymail.*"]
+ignore_missing_imports = true
+
+[tool.django-stubs]
+django_settings_module = "tests.settings"
