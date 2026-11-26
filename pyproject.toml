@@ -117,7 +117,7 @@ django_settings_module = "tests.settings"
 [tool.bumpversion]
 # uv run bump-my-version bump patch|minor|major: updates __version__ and CHANGELOG.md,
 # commits "chore: release X.Y.Z" and creates the annotated tag vX.Y.Z.
-current_version = "0.1.0"
+current_version = "0.2.0"
 commit = true
 message = "chore: release {new_version}"
 tag = true

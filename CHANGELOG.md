@@ -6,6 +6,8 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-26
+
 ### Added
 
 - Release tooling: `uv run bump-my-version bump patch|minor|major` updates `__version__` and
@@ -32,5 +34,6 @@ All notable changes to this project are documented here. The format follows
   `LETTERMINT_WEBHOOK_SECRET` and `LETTERMINT_INBOUND_SECRET`.
 - `anymail_lettermint.urls` for `include()`.
 
-[Unreleased]: https://github.com/palgakalkulaator/django-anymail-lettermint/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/palgakalkulaator/django-anymail-lettermint/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/palgakalkulaator/django-anymail-lettermint/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/palgakalkulaator/django-anymail-lettermint/releases/tag/v0.1.0
