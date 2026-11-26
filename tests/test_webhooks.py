@@ -13,10 +13,21 @@ from anymail.exceptions import AnymailConfigurationError
 from anymail.signals import inbound, tracking
 from django.test import override_settings
 
+from anymail_lettermint import webhooks
 from anymail_lettermint.webhooks import LettermintTrackingWebhookView
 
 TRACKING_URL = "/anymail/lettermint/tracking/"
 INBOUND_URL = "/anymail/lettermint/inbound/"
+
+
+@pytest.fixture(autouse=True, params=["builtin", "sdk"])
+def signature_verifier(request, monkeypatch):
+    """Run every webhook test with the built-in check and with the [sdk] extra."""
+    if request.param == "builtin":
+        monkeypatch.setattr(webhooks, "SdkWebhook", None)
+    elif webhooks.SdkWebhook is None:
+        pytest.skip("the [sdk] extra (lettermint) is not installed")
+    return request.param
 
 
 def sign(body: bytes, secret: str, timestamp: int) -> str:
